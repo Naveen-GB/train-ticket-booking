@@ -1,0 +1,300 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/edit/{bookingID}/{newSectionID}/{newSeatID}": {
+      "put": {
+        "tags": [
+          "train-ticket-booking-controller"
+        ],
+        "operationId": "editSeat",
+        "parameters": [
+          {
+            "name": "bookingID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "newSectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "newSeatID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book": {
+      "post": {
+        "tags": [
+          "train-ticket-booking-controller"
+        ],
+        "operationId": "bookTicket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookedTicket"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/view/{trainID}/{sectionID}": {
+      "get": {
+        "tags": [
+          "train-ticket-booking-controller"
+        ],
+        "operationId": "viewAllSeatsInSection",
+        "parameters": [
+          {
+            "name": "trainID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Seat"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/receipt/{mailID}": {
+      "get": {
+        "tags": [
+          "train-ticket-booking-controller"
+        ],
+        "operationId": "getReceipt",
+        "parameters": [
+          {
+            "name": "mailID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookedTicket"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/{bookingID}": {
+      "delete": {
+        "tags": [
+          "train-ticket-booking-controller"
+        ],
+        "operationId": "deleteTicket",
+        "parameters": [
+          {
+            "name": "bookingID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BookRequest": {
+        "required": [
+          "fromPlace",
+          "passenger",
+          "price",
+          "seatID",
+          "sectionID",
+          "toPlace",
+          "trainID"
+        ],
+        "type": "object",
+        "properties": {
+          "fromPlace": {
+            "type": "string"
+          },
+          "toPlace": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "passenger": {
+            "$ref": "#/components/schemas/Passenger"
+          },
+          "sectionID": {
+            "type": "string"
+          },
+          "seatID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "trainID": {
+            "type": "string"
+          }
+        }
+      },
+      "Passenger": {
+        "required": [
+          "geteMail"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "geteMail": {
+            "type": "string"
+          }
+        }
+      },
+      "BookedTicket": {
+        "type": "object",
+        "properties": {
+          "bookingID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromPlace": {
+            "type": "string"
+          },
+          "toPlace": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "passenger": {
+            "$ref": "#/components/schemas/Passenger"
+          },
+          "sectionID": {
+            "type": "string"
+          },
+          "seatID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "trainID": {
+            "type": "string"
+          }
+        }
+      },
+      "Seat": {
+        "type": "object",
+        "properties": {
+          "seatID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isEmpty": {
+            "type": "boolean"
+          },
+          "passenger": {
+            "$ref": "#/components/schemas/Passenger"
+          }
+        }
+      }
+    }
+  }
+}
